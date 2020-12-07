@@ -5,10 +5,10 @@
 - :earth_africa: I am currently sharing a little bit of my knowledge to the world through my website
 - 📫 How to find me: 
   - :bulb: [Website articles](http://cafechungkhoan.com/)
-  - :office: [LinkedIn](https://www.linkedin.com/in/hi%E1%BA%BFu-l%C3%AA-%C4%91%E1%BA%B7ng-trung-b968014b/
+  - :office: [LinkedIn](https://www.linkedin.com/in/hi%E1%BA%BFu-l%C3%AA-%C4%91%E1%BA%B7ng-trung-b968014b/)
 - 📫 My top skill: 
-  - :bulb: Search Engine Optimization (SEO)
-  - :bulb: Digital Ads Manager, Digital Strategies
-  - :bulb: Python (Programming Language) for Data Science & Machine Learning
+  - :atom: Search Engine Optimization (SEO)
+  - :atom: Digital Ads Manager, Digital Strategies
+  - :atom: Python (Programming Language) for Data Science & Machine Learning
   
   
