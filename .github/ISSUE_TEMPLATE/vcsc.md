@@ -1,7 +1,7 @@
 ---
 name: VCSC
 about: Viet Capital Securities Joint Stock Company
-title: Viet Capital Securities Joint Stock Company - VCSC
+title: THONG NGO
 labels: VCSC
 assignees: QuangThong1
 
