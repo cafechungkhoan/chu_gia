@@ -1,13 +1,15 @@
-# These are supported funding model platforms
+# These are supported funding model platfor 
 
-github: # Replace with up to 4 GitHub Sponsors-enabled usernames e.g., [vcsc.com.vn, invest.vcsc.com.vn, onlinetrading.vcsc.com.vn, bond.vcsc.com.vn]
-patreon: # Replace with a single Patreon username
-open_collective: # Replace with a single Open Collective username
-ko_fi: # Replace with a single Ko-fi username: quang7hong81-vcsc
-tidelift: # Replace with a single Tidelift platform-name/package-name e.g., quang7hong81-viet_capital_securities_joint_stock_company
-community_bridge: # Replace with a single Community Bridge project-name e.g., quang7hong81-viet_capital_securities_joint_stock_company
-liberapay: # Replace with a single Libera pay username: quang7hong81-viet_capital_securities_joint_stock_company
-issuehunt: # Replace with a single IssueHunt username: quang7hong81-viet_capital_securities_joint_stock_company
-otechie: # Replace with a single Otechie username: quang7hong81-viet_capital_securities_joint_stock_company
-custom: # Replace with up to 4 custom sponsorship URLs e.g., ['vcsc.com.vn', 'invest.vcsc.com.vn', 'www.cafechungkhoan.com', www.vcsc.com.vn']
-# Assignees: THONG NGO
+github: # Replace with up to 4 GitHub Sponsors-enabled usernames e.g., [viet_capital_securities_jsc-vcsc, vcsc]
+patreon: # Replace with a single Patreon username vcsc 
+open_collective: # Replace with a single Open Collective username vcsc
+ko_fi: # Replace with a single Ko-fi username: vcsc 
+tidelift: # Replace with a single Tidelift platform-name/package-name e.g., viet capital securities jsc-vcsc  
+community_bridge: # Replace with a single Community Bridge project-name e.g., viet capital securities jsc-vcsc 
+liberapay: # Replace with a single Libera pay username: vcsc
+issuehunt: # Replace with a single IssueHunt username: vcsc 
+otechie: # Replace with a single Otechie username: vcsc
+custom: # Replace with up to 4 custom sponsorship URLs e.g., ['www.vcsc.com.vn', 'onlinetrading.vcsc.com.vn','mobile.vcsc.com.vn', 'invest.vcsc.com.vn/mo-tai-khoan-online'] 
+
+# assignees: THONG NGO 
+  e-mail: quangthong1011@gmail.com
