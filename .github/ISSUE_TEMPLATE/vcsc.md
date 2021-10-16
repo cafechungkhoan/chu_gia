@@ -2,7 +2,7 @@
 name: VCSC
 about: Open an online securities trading account
 title: Open an online securities trading account - VCSC
-labels: VCSC
+labels: ''
 assignees: QuangThong1
 
 ---
