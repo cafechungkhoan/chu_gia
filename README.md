@@ -11,4 +11,5 @@
   - :atom: Digital Ads Manager, Digital Strategies
   - :atom: Python (Programming Language) for Data Science & Machine Learning
   
-  
+  # Author: THONG NGO 
+    E-mail: quangthong1011@gmail.com
