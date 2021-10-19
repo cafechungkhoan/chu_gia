@@ -2,7 +2,7 @@
 name: vcsc.com.vn
 about: " Viet Capital Securities Joint Stock Company - VCSC"
 title: Viet Capital Securities Joint Stock Company - VCSC
-labels: VCSC
+labels: ''
 assignees: QuangThong1
 
 ---
