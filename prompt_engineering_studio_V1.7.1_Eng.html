@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Prompt Engineering Studio — Dark Colorful V1.5</title>
+
+  <!-- Force dark mode -->
+  <script>document.documentElement.classList.add('dark');</script>
+
+  <!-- Tailwind config -->
+  <script>
+    tailwind = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter','ui-sans-serif','system-ui','Segoe UI','Roboto','Helvetica Neue','Arial'] },
+          colors: {
+            primary:{50:'#eef5ff',100:'#daebff',200:'#b5d6ff',300:'#8cc0ff',400:'#63a8ff',500:'#3a8cff',600:'#1f6ef0',700:'#1756c4',800:'#153f91',900:'#132f69'},
+            accent:{50:'#fdf2ff',100:'#f8e7ff',200:'#efccff',300:'#e3a6ff',400:'#d67bff',500:'#c44dff',600:'#a82df0',700:'#8423c4',800:'#641a93',900:'#4b156d'},
+            mint:{50:'#ecfdf5',100:'#d1fae5',200:'#a7f3d0',300:'#6ee7b7',400:'#34d399',500:'#10b981',600:'#059669',700:'#047857',800:'#065f46',900:'#064e3b'},
+            amberx:{50:'#fff7ed',100:'#ffedd5',200:'#fed7aa',300:'#fdba74',400:'#fb923c',500:'#f97316',600:'#ea580c',700:'#c2410c',800:'#9a3412',900:'#7c2d12'},
+            cyanx:{50:'#ecfeff',100:'#cffafe',200:'#a5f3fc',300:'#67e8f9',400:'#22d3ee',500:'#06b6d4',600:'#0891b2',700:'#0e7490',800:'#155e75',900:'#164e63'}
+          },
+          boxShadow:{ soft:'0 12px 40px rgba(0,0,0,0.35)' },
+          keyframes:{ gradient:{'0%,100%':{'background-position':'0% 50%'},'50%':{'background-position':'100% 50%'}}},
+          animation:{ gradient:'gradient 12s ease infinite' }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* Dark-only glass and rainbow borders */
+    .glass-dark{ background:rgba(7,12,20,0.65); backdrop-filter: blur(14px); border:1px solid rgba(148,163,184,0.12) }
+    .rainbow{ position:relative; }
+    .rainbow:before{
+      content:''; position:absolute; inset:0; padding:1px; border-radius:16px;
+      background: conic-gradient(from 120deg, #22d3ee, #c44dff, #10b981, #f97316, #1f6ef0, #22d3ee);
+      -webkit-mask: 
+        linear-gradient(#000 0 0) content-box, 
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      pointer-events:none;
+    }
+    .scroll-thin{ scrollbar-width:thin }
+    .scroll-thin::-webkit-scrollbar{ width:8px;height:8px }
+    .scroll-thin::-webkit-scrollbar-thumb{ background:#334155;border-radius:999px }
+    .scroll-thin::-webkit-scrollbar-track{ background:transparent }
+    .blurred *{ filter: blur(6px) }
+    .mask-text{ -webkit-text-security: disc }
+
+    /* Stealth mode */
+    .stealth-preset *{ font-size:10px!important; line-height:1.1!important }
+    html.stealth-page, body.stealth-page{ font-size:62.5%!important }
+    body.stealth-page *{ line-height:1.15!important }
+    @media (min-width:640px){ body.stealth-page{ zoom:.82 } }
+
+    @keyframes gradient {
+      0%,100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    .animate-gradient {
+      background-size: 200% 200%;
+      animation: gradient 5s linear infinite; /* tăng tốc lên 5 lần */
+    }
+    /* Di chuyển các khối màu */
+    @keyframes move1 {
+      0% { transform: translate(-40px, -32px) scale(1);}
+      50% { transform: translate(60vw, 10vh) scale(1.2);}
+      100% { transform: translate(-40px, -32px) scale(1);}
+    }
+    @keyframes move2 {
+      0% { transform: translate(0,0) scale(1);}
+      50% { transform: translate(-40vw, 60vh) scale(1.1);}
+      100% { transform: translate(0,0) scale(1);}
+    }
+    @keyframes move3 {
+      0% { transform: translate(0,0) scale(1);}
+      50% { transform: translate(30vw, 70vh) scale(0.9);}
+      100% { transform: translate(0,0) scale(1);}
+    }
+    @keyframes move4 {
+      0% { transform: translate(0,0) scale(1);}
+      50% { transform: translate(-20vw, -40vh) scale(1.15);}
+      100% { transform: translate(0,0) scale(1);}
+    }
+    @keyframes move5 {
+      0% { transform: translate(0,0) scale(1);}
+      50% { transform: translate(40vw, -30vh) scale(1.1);}
+      100% { transform: translate(0,0) scale(1);}
+    }
+    .blob1 { animation: move1 18s ease-in-out infinite alternate; }
+    .blob2 { animation: move2 22s ease-in-out infinite alternate; }
+    .blob3 { animation: move3 26s ease-in-out infinite alternate; }
+    .blob4 { animation: move4 24s ease-in-out infinite alternate; }
+    .blob5 { animation: move5 28s ease-in-out infinite alternate; }
+
+    /* Colorful animated gradient for button hover */
+    .colorful-hover {
+      background: linear-gradient(90deg, #06b6d4, #3b82f6, #a21caf, #f43f5e, #f59e42, #facc15, #06b6d4);
+      background-size: 300% 100%;
+      transition: background-position 0.4s cubic-bezier(.4,0,.2,1), color 0.2s;
+    }
+    .colorful-animate {
+      animation: colorful-move 2.2s linear infinite;
+    }
+    @keyframes colorful-move {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    /* Button gradient hover/active */
+    .pes-link-btn-gradient {
+      background: linear-gradient(90deg, #06b6d4, #3b82f6, #a21caf, #f43f5e, #f59e42, #facc15, #06b6d4);
+      background-size: 300% 100%;
+      color: #fff;
+      transition: background-position 0.4s cubic-bezier(.4,0,.2,1), color 0.2s, transform 0.2s, filter 0.2s;
+    }
+    .pes-link-btn-gradient:hover, .pes-link-btn-gradient:focus, .colorful-btn:hover, .colorful-btn:focus {
+      background-position: 100% 50%;
+      color: #111;
+      filter: brightness(1.15);
+      transform: scale(1.045);
+      box-shadow: 0 0 0 3px #facc15, 0 8px 32px 0 rgba(250,204,21,0.18);
+    }
+    .colorful-btn:active, .pes-link-btn-gradient:active {
+      filter: brightness(1.2);
+      transform: scale(0.98);
+    }
+
+    /* Glow effects for card/pattern */
+    .glow-amber { box-shadow: 0 0 12px 2px #f59e42, 0 2px 16px 0 #facc15; }
+    .glow-cyan { box-shadow: 0 0 12px 2px #06b6d4, 0 2px 16px 0 #3b82f6; }
+
+    /* Focus ring for buttons */
+    button:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px #facc15, 0 2px 8px 0 #facc15;
+      z-index: 2;
+    }
+
+    /* Pattern popup tip */
+    .pattern-tip-popup {
+      position: absolute;
+      z-index: 50;
+      left: 50%;
+      top: 100%;
+      transform: translateX(-50%);
+      min-width: 180px;
+      background: #18181b;
+      color: #facc15;
+      border: 1px solid #facc15;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      box-shadow: 0 4px 24px 0 #facc15bb;
+      margin-top: 8px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.18s;
+      white-space: pre-line;
+    }
+    .pattern-tip-popup.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+
+<body class="font-sans min-h-screen text-slate-100 bg-slate-950 relative overflow-x-hidden">
+  <!-- Animated colorful background for dark -->
+  <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10">
+    <div class="absolute inset-0 bg-[radial-gradient(1200px_800px_at_10%_10%,rgba(36,99,235,0.18),transparent),radial-gradient(1200px_800px_at_90%_20%,rgba(168,45,240,0.16),transparent),radial-gradient(1200px_800px_at_20%_90%,rgba(16,185,129,0.14),transparent),radial-gradient(1200px_800px_at_85%_85%,rgba(6,182,212,0.12),transparent)]"></div>
+    <div class="absolute -top-40 -left-32 h-[500px] w-[500px] rounded-full blur-3xl opacity-70 animate-gradient bg-[linear-gradient(120deg,#a82df0,#3a8cff,#10b981)] bg-[length:200%_200%] blob1"></div>
+    <div class="absolute -bottom-32 -right-24 h-[500px] w-[500px] rounded-full blur-3xl opacity-60 animate-gradient bg-[linear-gradient(120deg,#06b6d4,#f97316,#1f6ef0)] bg-[length:200%_200%] blob2"></div>
+    <div class="absolute top-1/2 left-1/3 h-[400px] w-[400px] rounded-full blur-2xl opacity-50 animate-gradient bg-[linear-gradient(120deg,#f97316,#a82df0,#10b981)] bg-[length:200%_200%] blob3"></div>
+    <div class="absolute top-1/4 left-2/3 h-[300px] w-[300px] rounded-full blur-2xl opacity-40 animate-gradient bg-[linear-gradient(120deg,#facc15,#3a8cff,#f43f5e)] bg-[length:200%_200%] blob4"></div>
+    <div class="absolute bottom-1/4 right-1/2 h-[350px] w-[350px] rounded-full blur-2xl opacity-35 animate-gradient bg-[linear-gradient(120deg,#a82df0,#f97316,#06b6d4)] bg-[length:200%_200%] blob5"></div>
+  </div>
+  <!-- Particles background for app -->
+  <canvas id="particles-bg" style="position:fixed;inset:0;z-index:-1;pointer-events:none;"></canvas>
+  <!-- Particles background for login -->
+  <canvas id="particles-login" style="position:fixed;inset:0;z-index:-1;pointer-events:none;display:none;"></canvas>
+
+  <!-- ===== LOGIN (dark only) ===== -->
+  <div id="login" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xl grid grid-cols-1 md:grid-cols-2 gap-6 p-6 md:place-items-center">
+    <!-- Nền động colorful -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
+      <div class="absolute inset-0 animate-gradient bg-[radial-gradient(1200px_800px_at_10%_10%,rgba(36,99,235,0.18),transparent),radial-gradient(1200px_800px_at_90%_20%,rgba(168,45,240,0.16),transparent),radial-gradient(1200px_800px_at_20%_90%,rgba(16,185,129,0.14),transparent),radial-gradient(1200px_800px_at_85%_85%,rgba(6,182,212,0.12),transparent)]"></div>
+      <!-- Thêm nhiều blob động -->
+      <div class="absolute -top-40 -left-32 h-[500px] w-[500px] rounded-full blur-3xl opacity-70 animate-gradient bg-[linear-gradient(120deg,#a82df0,#3a8cff,#10b981)] bg-[length:200%_200%] blob1"></div>
+      <div class="absolute -bottom-32 -right-24 h-[500px] w-[500px] rounded-full blur-3xl opacity-60 animate-gradient bg-[linear-gradient(120deg,#06b6d4,#f97316,#1f6ef0)] bg-[length:200%_200%] blob2"></div>
+      <div class="absolute top-1/2 left-1/3 h-[400px] w-[400px] rounded-full blur-2xl opacity-50 animate-gradient bg-[linear-gradient(120deg,#f97316,#a82df0,#10b981)] bg-[length:200%_200%] blob3"></div>
+      <div class="absolute top-1/4 left-2/3 h-[300px] w-[300px] rounded-full blur-2xl opacity-40 animate-gradient bg-[linear-gradient(120deg,#facc15,#3a8cff,#f43f5e)] bg-[length:200%_200%] blob4"></div>
+      <div class="absolute bottom-1/4 right-1/2 h-[350px] w-[350px] rounded-full blur-2xl opacity-35 animate-gradient bg-[linear-gradient(120deg,#a82df0,#f97316,#06b6d4)] bg-[length:200%_200%] blob5"></div>
+    </div>
+
+    <!-- About -->
+    <aside id="bioCard" class="hidden md:block w-full max-w-xl mx-auto md:mx-0 rounded-2xl glass-dark rainbow shadow-soft p-5 overflow-auto max-h-[85vh]">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-base sm:text-lg font-semibold inline-flex items-center gap-2">
+          <svg class="h-5 w-5 text-accent-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19 3 20l1-4 12.5-12.5z"></path>
+          </svg>
+          About the Author
+        </h2>
+        <span class="text-xs px-2 py-1 rounded-full bg-slate-900/60 border border-slate-700 text-slate-200">Created by <b>Le Dang Trung Hieu </b></span>
+        <span class="text-xs px-2 py-1 rounded-full bg-slate-900/60 border border-slate-700 text-slate-200"><b> Version 1.7</b></span>
+      </div>
+      <div class="border-t border-dashed border-slate-700 pt-3 mt-3 space-y-3">
+        <div class="flex items-start gap-2">
+          <div class="h-7 w-7 rounded-md bg-gradient-to-br from-amberx-500 to-amberx-700 text-white flex items-center justify-center">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+          </div>
+          <div>
+            <h3 class="text-xs uppercase tracking-wide text-slate-400">APP</h3>
+            <p class="text-sm font-medium text-slate-100">
+              <strong>
+                <h1 class="text-lg sm:text-xl font-semibold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-primary-400 via-accent-300 to-mint-300">
+                  <span style="background: linear-gradient(to right, #60a5fa, #d67bff, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;">
+                    Prompt Engineering Studio ©
+                  </span>
+                </h1>
+              </strong>
+            </p>
+          </div>
+        </div>
+        <div class="flex items-start gap-2">
+          <div class="h-7 w-7 rounded-md bg-gradient-to-br from-mint-500 to-mint-700 text-white flex items-center justify-center">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div>
+            <h3 class="text-xs uppercase tracking-wide text-slate-400">WORKING AT</h3>
+            <p class="text-xs leading-5 text-slate-200">
+              <strong>Asahi Life Consulting Vietnam</strong>, Marketing department.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-start gap-2">
+          <div class="h-7 w-7 rounded-md bg-gradient-to-br from-cyanx-500 to-primary-600 text-white flex items-center justify-center">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+          </div>
+          <div>
+            <h3 class="text-xs uppercase tracking-wide text-slate-400">Purpose of this tool</h3>
+            <p class="text-xs leading-5 text-slate-200">
+              Realizing that AI is a strategic resource but effective exploitation remains a challenge,
+              I proactively developed a Prompt Engineering tool. The goal is to standardize and improve the quality
+              of communication with AI, ensuring all outputs meet the highest standards and directly serve business objectives,
+              thereby turning AI's potential into real performance for the organization.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Thêm 2 button bên dưới phần About the Author -->
+      <div class="mt-5 flex flex-col gap-2">
+        <a
+          href="https://itbusinesstoday.com/tech/business-analytics/prompt-engineers-of-japan-the-rising-architects-of-generative-workflows/"
+          target="_blank"
+          rel="noopener"
+          class="colorful-btn inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-primary-700 bg-primary-900/30 text-primary-200 hover:text-white transition text-xs"
+          style="min-height:2rem; min-width:0;"
+        >
+          <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          What is Prompt Engineering? Why is it important?
+        </a>
+        <a
+          href="https://www.01growth.com/en/post/state-of-ai-in-japan"
+          target="_blank"
+          rel="noopener"
+          class="colorful-btn inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-mint-700 bg-mint-900/30 text-mint-200 hover:text-white transition text-xs"
+          style="min-height:2rem; min-width:0;"
+        >
+          <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
+          AI adoption growth in business
+        </a>
+        <a
+          href="https://forms.gle/6BfUTpLoNGZvBmku9"
+          target="_blank"
+          rel="noopener"
+          class="colorful-btn inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-amberx-700 bg-amberx-900/30 text-amberx-200 hover:text-white transition text-xs"
+          style="min-height:2rem; min-width:0;"
+        >
+          <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19 3 20l1-4 12.5-12.5z"></path></svg>
+          Feedback & Suggest improvements
+        </a>
+      </div>
+    </aside>
+
+    <!-- Login card -->
+    <div class="w-[92%] max-w-sm rounded-2xl glass-dark rainbow p-5 shadow-soft">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-600 text-white flex items-center justify-center">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"></path></svg>
+        </div>
+        <div class="min-w-0">
+          <p class="text-sm font-semibold text-slate-100">Login required</p>
+          <p class="text-xs text-slate-400">Enter 4-digit password below</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <label class="block text-xs font-medium text-slate-300">Password</label>
+        <input id="pw" type="password" inputmode="numeric" autocomplete="current-password" placeholder="Enter 4 digits" class="w-full rounded-xl border border-slate-700 bg-slate-950/40 p-3 text-sm mask-text focus:outline-none focus:ring-2 focus:ring-primary-500 text-slate-100"/>
+        <div class="flex items-center justify-between text-xs text-slate-400">
+          <span id="loginMsg">Locked for 5 minutes after 3 failed attempts</span>
+          <button id="pwToggle" class="inline-flex items-center gap-1 underline"><svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><path d="M12 9v6"/></svg> Show/Hide</button>
+        </div>
+        <div class="flex mt-2">
+          <button
+            id="loginBtn"
+            class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl
+              animate-gradient
+              shadow-lg shadow-pink-500/30
+              hover:brightness-110 hover:scale-105 transition-all duration-300
+              text-white px-4 py-2.5 text-base font-semibold tracking-wide"
+            style="background-image: linear-gradient(90deg, #06b6d4, #3b82f6, #a21caf, #f43f5e, #f59e42, #facc15); background-size: 200% 100%;"
+          >
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+            </svg>
+            Login
+          </button>
+        </div>
+        <div class="flex gap-2 mt-1">
+          <button id="loginInfo" class="inline-flex items-center gap-2 rounded-xl border border-slate-700 px-3 py-2 text-sm text-slate-200">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg> Note
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== APP ===== -->
+  <div id="app" class="min-h-screen hidden">
+  <!-- Header -->
+  <header class="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/70 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-accent-500 to-primary-700 shadow-soft flex items-center justify-center">
+            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"></path></svg>
+          </div>
+          <div>
+            <h1 class="text-lg sm:text-xl font-semibold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-primary-400 via-accent-300 to-mint-300">
+              <span style="background: linear-gradient(to right, #60a5fa, #d67bff, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;">
+                Prompt Engineering Studio ©
+              </span>
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-400">
+              Create effective AI prompts easily – no experience needed!
+            </p>
+            <p class="text-[10px] italic text-slate-500">
+              By <b>Le Dang Trung Hieu</b> — Asahi Life Consulting Vietnam
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="resetAll" class="rounded-xl bg-gradient-to-r from-amber-500 to-primary-600 text-white text-sm px-3 py-2 hover:opacity-90 inline-flex items-center gap-2">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M7 12h8"/></svg> Reset
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- Main -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+      <!-- Sidebar -->
+      <aside class="lg:col-span-4 xl:col-span-3">
+        <!-- BEGIN: How-to-use box -->
+        <div class="mb-5 rounded-2xl glass-dark rainbow shadow-soft p-4">
+          <h3 class="text-sm font-semibold text-primary-400 mb-2 flex items-center gap-2">
+            <svg class="h-4 w-4 text-primary-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            How to use
+          </h3>
+          <ol class="list-decimal pl-5 text-xs text-slate-200 space-y-1">
+            <li><b>Step 1:</b> Choose a <b>Prompt Technique</b> that matches your task.</li>
+            <li><b>Step 2:</b> Read the explanation about the selected technique to understand how it works.</li>
+            <li><b>Step 3:</b> Fill in the basic prompt fields and optionally select a <b>Pattern</b> (how AI should process your request).</li>
+            <li><b>Step 4:</b> Click <b>Generate Prompt</b> and copy the result to your favorite AI tool (ChatGPT, Claude, Gemini, etc.).</li>
+          </ol>
+        </div>
+        <!-- END: How-to-use box -->
+        <div class="rounded-2xl glass-dark rainbow shadow-soft">
+          <div class="p-4 border-b border-slate-800">
+            <div class="flex items-center justify-between">
+              <h2 class="text-sm font-semibold inline-flex items-center gap-2 text-slate-100">
+                <svg class="h-4 w-4 text-mint-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8 10-5-5"/></svg>
+                Prompt Techniques
+              </h2>
+              <span class="text-xs text-slate-400">Choose a style</span>
+            </div>
+          </div>
+          <nav id="techNav" class="p-2 max-h-[70vh] overflow-auto scroll-thin flex flex-col gap-2"></nav>
+        </div>
+      </aside>
+      <!-- Composer -->
+      <section class="lg:col-span-8 xl:col-span-9 space-y-6">
+        <!-- Explanation / Recs -->
+        <div class="rounded-2xl glass-dark rainbow shadow-soft">
+          <div class="p-5 sm:p-6 flex flex-col gap-4">
+            <div class="flex items-start gap-3">
+              <div class="h-10 w-10 rounded-xl bg-primary-900/40 text-primary-200 flex items-center justify-center">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19 3 20l1-4 12.5-12.5z"></path>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 id="expTitle" class="text-base font-semibold text-slate-100">What is a prompt?</h3>
+                <p id="expDesc" class="text-sm text-slate-300 mt-1">
+                  <!-- Replaced all previous content with the following -->
+                  <b>Explanation:</b> <br>
+                  <b>Zero-shot</b> is the simplest way to communicate with AI: just state your request clearly, like assigning a task to a colleague. Write concisely, specifically, and avoid ambiguity.<br>
+                  <b>Use cases:</b> Suitable for clear tasks such as: summarizing reports, writing emails, creating checklists, translating documents, etc.<br>
+                  <b>Benefits:</b> Saves time, requires no technical knowledge, anyone can do it.<br>
+                  <b>Tip:</b> Clearly state your goal, desired format (table, bullet points, etc.), and any input information if available.
+                </p>
+              </div>
+            </div>
+            <div class="rounded-xl border border-slate-800 p-4 bg-gradient-to-br from-slate-900/50 to-slate-900/20">
+              <p id="expExample" class="text-sm text-slate-200">
+                <!-- Replaced all previous content with the following -->
+                <b>Practical example:</b><br>
+                <i>Request:</i> "Summarize the customer's email content into 3 main points, using simple language that is easy for new employees to understand."<br>
+                <i>AI result:</i><br>
+                - The customer is satisfied with the product.<br>
+                - Delivery was slower than expected.<br>
+                - The shipping process should be improved.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Dynamic Form -->
+        <div class="rounded-2xl glass-dark rainbow shadow-soft">
+          <div class="p-5 sm:p-6">
+            <div id="inputFields" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            <div class="my-5">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-semibold inline-flex items-center gap-2 text-slate-100">
+                  <svg class="h-4 w-4 text-cyanx-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+                  Prompt patterns
+                </h3>
+                <button id="clearInputs" class="text-xs px-2 py-1 border border-slate-700 rounded-lg hover:bg-slate-900 text-slate-200">Clear fields</button>
+              </div>
+              <div id="patterns" class="p-3 flex flex-wrap gap-2"></div>
+            </div>
+            <div class="mt-5 flex flex-wrap gap-3">
+              <button id="generateBtn" class="inline-flex items-center gap-2 rounded-xl
+                animate-gradient
+                shadow-lg shadow-pink-500/30
+                hover:brightness-110 hover:scale-105 transition-all duration-300
+                text-white px-4 py-2.5 text-base font-semibold tracking-wide"
+              style="background-image: linear-gradient(90deg, #06b6d4, #3b82f6, #a21caf, #f43f5e, #f59e42, #facc15); background-size: 200% 100%;">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                </svg>
+                Generate Prompt <span class="hidden sm:inline">(Ctrl/⌘+Enter)</span>
+              </button>
+              <button id="validateBtn" class="inline-flex items-center gap-2 rounded-xl border border-slate-700 px-4 py-2.5 hover:bg-slate-900 text-slate-200">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"></path></svg>
+                Check required fields
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Output -->
+        <div class="rounded-2xl glass-dark rainbow shadow-soft">
+          <div class="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between">
+            <div>
+              <h4 class="text-sm font-semibold inline-flex items-center gap-2 text-slate-100">
+                <svg class="h-4 w-4 text-amberx-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                Your Prompt
+              </h4>
+              <p id="stats" class="text-xs text-slate-400">0 characters • 0 words • ~0 tokens</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button id="copyBtn" class="rounded-lg border border-slate-700 px-3 py-2 text-sm hover:bg-slate-900 inline-flex items-center gap-2 text-slate-200">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+              </button>
+              <button id="downloadBtn" class="rounded-lg border border-slate-700 px-3 py-2 text-sm hover:bg-slate-900 inline-flex items-center gap-2 text-slate-200">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 12l5 5 5-5"/><path d="M5 21h14"/></svg> Download .txt
+              </button>
+              <button id="clearOutput" class="rounded-lg border border-slate-700 px-3 py-2 text-sm hover:bg-slate-900 inline-flex items-center gap-2 text-slate-200">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6v14a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg> Clear
+              </button>
+            </div>
+          </div>
+          <div class="p-4 sm:p-5 space-y-4">
+            <textarea id="output" rows="12" class="w-full bg-slate-900/50 border border-slate-800 rounded-xl p-3 text-sm leading-6 focus:outline-none focus:ring-2 focus:ring-primary-500 text-slate-100"></textarea>
+            <div class="rounded-xl border border-slate-800 p-3 bg-slate-950/40">
+              <div class="flex flex-wrap items-center gap-3 text-xs text-slate-200">
+                <div class="flex items-center gap-2"><label for="outRate">Output price /1K tok</label><input id="outRate" step="0.001" type="number" class="w-24 rounded border border-slate-700 p-1 bg-slate-950/30 text-slate-100"/></div>
+                <div class="flex items-center gap-2"><label for="inRate">Input price /1K tok</label><input id="inRate" step="0.001" type="number" class="w-24 rounded border border-slate-700 p-1 bg-slate-950/30 text-slate-100"/></div>
+                <div class="flex items-center gap-2"><label for="expOutTok">Estimated output tok</label><input id="expOutTok" type="number" class="w-24 rounded border border-slate-700 p-1 bg-slate-950/30 text-slate-100"/></div>
+                <button id="calcCost" class="rounded border border-slate-700 px-2 py-1 hover:bg-slate-900 text-slate-200">Calculate cost</button>
+                <span id="costResult" class="ml-auto text-slate-300"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 hidden px-4 py-2 rounded-xl text-sm shadow-lg bg-slate-900 text-white"></div>
+  <input id="fileInput" type="file" accept="application/json" class="hidden">
+  <canvas id="particles-bg" style="position:fixed;inset:0;z-index:-1;pointer-events:none;"></canvas>
+  <canvas id="particles-login" style="position:fixed;inset:0;z-index:-1;pointer-events:none;display:none;"></canvas>
+
+  <script>
+    // ================= Security gate =================
+    const EXPECTED_SHA256 = 'e276f59bc5a81f2968dfb34b6324f7d59fea2723fd733bc9e70d65e848ef8f42'; // sha256("3008")
+    const LOCK_MINUTES = 5;
+    const IDLE_MINUTES = 3;
+    const SESSION_KEY = 'pe_auth_ok';
+    const FAIL_KEY = 'pe_auth_fail';
+
+    const $ = (id) => document.getElementById(id);
+    function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.remove('hidden'); t.style.opacity='1'; setTimeout(()=>{ t.style.transition='opacity 400ms'; t.style.opacity='0'; },1600); setTimeout(()=>{ t.classList.add('hidden'); t.style.transition=''; },2100); }
+
+    function hex(buffer){ return Array.from(new Uint8Array(buffer)).map(b=>b.toString(16).padStart(2,'0')).join(''); }
+    async function sha256(text){ const enc=new TextEncoder(); const buf=await crypto.subtle.digest('SHA-256', enc.encode(text)); return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''); }
+
+    function setLockedUI(locked){ const app=$('app'); const login=$('login'); if(locked){ app.classList.add('hidden'); login.classList.remove('hidden'); document.body.classList.remove('blurred'); } else { login.classList.add('hidden'); app.classList.remove('hidden'); startAppOnce(); } }
+
+    function checkLockout(){ const raw=sessionStorage.getItem(FAIL_KEY); if(!raw) return false; try{ const o=JSON.parse(raw); if(o.until && Date.now()<o.until){ const left=Math.ceil((o.until-Date.now())/1000); $('loginMsg').textContent = `Đang bị khoá ${Math.ceil(left/60)} phút`; $('pw').disabled=true; $('loginBtn').disabled=true; return true; } }catch(e){} return false; }
+
+    async function tryLogin(){ if(checkLockout()) return; const pw=$('pw').value||''; const digest=await sha256(pw); if(digest===EXPECTED_SHA256){ sessionStorage.setItem(SESSION_KEY, '1'); sessionStorage.removeItem(FAIL_KEY); setLockedUI(false); $('pw').value=''; return; }
+      const raw=sessionStorage.getItem(FAIL_KEY); let o= raw? JSON.parse(raw): {count:0, until:0}; o.count+=1; if(o.count>=3){ o.until=Date.now()+LOCK_MINUTES*60*1000; $('loginMsg').textContent = `Too many failed attempts. Locked for ${LOCK_MINUTES} minutes.`; $('pw').disabled=true; $('loginBtn').disabled=true; }
+      sessionStorage.setItem(FAIL_KEY, JSON.stringify(o)); toast('Wrong password'); }
+
+    function autoRelockInit(){ let timer=null; function reset(){ if(timer) clearTimeout(timer); timer=setTimeout(()=>{ sessionStorage.removeItem(SESSION_KEY); setLockedUI(true); }, IDLE_MINUTES*60*1000); }
+      ['mousemove','keydown','click','scroll','focus'].forEach(ev=> document.addEventListener(ev, reset)); document.addEventListener('visibilitychange',()=>{ if(document.hidden){ sessionStorage.removeItem(SESSION_KEY); setLockedUI(true); } }); reset(); }
+
+    $('pwToggle').addEventListener('click', ()=>{ const el=$('pw'); el.type = el.type==='password'? 'text':'password'; });
+    $('loginBtn').addEventListener('click', tryLogin);
+    $('pw').addEventListener('keydown', (e)=>{ if(e.key==='Enter') tryLogin(); });
+    $('loginInfo').addEventListener('click', ()=>{
+      alert('Note: Basic UI lock, feature simulation. \n\n' +
+            '1. Password is 4 digits, not stored on server.\n' +
+            '2. After 3 wrong attempts, UI will be locked for 5 minutes.\n' +
+            '3. No logout function, only relock UI.\n' +
+            '4. No user data stored, only uses sessionStorage.\n' +
+            '5. Purpose is to simulate basic security for the app.\n');
+    });
+
+    if(sessionStorage.getItem(SESSION_KEY)==='1' && !checkLockout()) setLockedUI(false); else setLockedUI(true);
+    autoRelockInit();
+
+    // ================= App data (unchanged) =================
+    const techniques=[
+      { key:'zero-shot', title:'Zero-shot', desc:'Direct command when the requirement is clear', icon:'<path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19 3 20l1-4 12.5-12.5z"/>' },
+      { key:'few-shot', title:'Few-shot', desc:'Give a few examples to mimic the structure', icon:'<path d="M3 7h18M3 12h18M3 17h18"/>' },
+      { key:'react-tool', title:'ReAct / Tool-use', desc:'Use tools before answering', icon:'<path d="M12 2v20M2 12h20"/>' }
+    ];
+
+    const techniqueInputs={
+      'zero-shot':[
+        {label:'Main task',id:'task',type:'textarea',required:true,placeholder:'E.g.: Summarize report, write sales email, analyze data…'},
+        {label:'Input data',id:'input',type:'textarea',placeholder:'Paste data or context'},
+        {label:'Output format',id:'output-format',type:'text',placeholder:'E.g.: 5 bullets, 3-column table, JSON schema…'}
+      ],
+      'few-shot':[
+        {label:'Main task',id:'task',type:'textarea',required:true},
+        {label:'Example 1: Input',id:'example1-input',type:'text',required:true},
+        {label:'Example 1: Output',id:'example1-output',type:'text',required:true},
+        {label:'Example 2: Input',id:'example2-input',type:'text'},
+        {label:'Example 2: Output',id:'example2-output',type:'text'},
+        {label:'New input',id:'new-input',type:'textarea',required:true}
+      ],
+      'react-tool':[
+        {label:'Main task',id:'task',type:'textarea',required:true},
+        {label:'Available tools (search, calc, web...)',id:'tools',type:'textarea',required:true},
+        {label:'Input data',id:'input',type:'textarea'}
+      ]
+    };
+
+    const techniqueExplanations={
+      'zero-shot':{
+        description: `<b>Explanation:</b> <br>
+        <b>Zero-shot</b> is the simplest way to communicate with AI: just state your request clearly, like assigning a task to a colleague. Write concisely, specifically, and avoid ambiguity.<br>
+        <b>Use cases:</b> Suitable for clear tasks such as: summarizing reports, writing emails, creating checklists, translating documents, etc.<br>
+        <b>Benefits:</b> Saves time, requires no technical knowledge, anyone can do it.<br>
+        <b>Tip:</b> Clearly state your goal, desired format (table, bullet points, etc.), and any input information if available.`,
+        example: `<b>Practical example:</b><br>
+        <i>Request:</i> "Summarize the customer's email content into 3 main points, using simple language that is easy for new employees to understand."<br>
+        <i>AI result:</i><br>
+        - The customer is satisfied with the product.<br>
+        - Delivery was slower than expected.<br>
+        - The shipping process should be improved.`
+      },
+      'few-shot':{
+        description: `<b>Explanation:</b> <br>
+        <b>Few-shot</b> is a technique where you provide a few sample examples (Q&A, input/output) for the AI to learn how you want things done. It's like training a new employee with real examples.<br>
+        <b>Use cases:</b> Use when you want the AI to mimic your company's style, format, or specific rules.<br>
+        <b>Benefits:</b> Ensures consistent results, matches company standards, suitable for training, marketing, customer service.<br>
+        <b>Tip:</b> Give 1-2 clear examples, then state your new request for the AI to handle similarly.`,
+        example: `<b>Practical example:</b><br>
+        <i>Example 1:</i> <br>
+        Input: "Xin chào"<br>
+        Output: "Hello"<br>
+        <i>Example 2:</i> <br>
+        Input: "Cảm ơn"<br>
+        Output: "Thank you"<br>
+        <i>New request:</i> <br>
+        Input: "Chúc mừng"<br>
+        <i>AI result:</i> <br>
+        Output: "Congratulations"`
+      },
+      'react-tool':{
+        description: `<b>Explanation:</b> <br>
+        <b>ReAct / Tool-use</b> allows AI to use tools (search, calculation, web lookup, etc.) before answering, just like an employee actively looks up information before reporting.<br>
+        <b>Use cases:</b> Suitable for tasks that require up-to-date information, market data, or data analysis.<br>
+        <b>Benefits:</b> Quickly answers complex questions, saves time on manual searching.<br>
+        <b>Tip:</b> Clearly state which tools the AI is allowed to use (Google, calculator, etc.) and require source reporting.`,
+        example: `<b>Practical example:</b><br>
+        <i>Request:</i> "Find the revenue figures for the Vietnamese insurance industry in 2023 and list the references."<br>
+        <i>AI result:</i><br>
+        - Revenue of the Vietnamese insurance industry in 2023: 250,000 billion VND.<br>
+        - Source: Ministry of Finance report, VietnamFinance.vn (2023).`
+      }
+    };
+
+    const aiRecommendations={
+      'zero-shot':['GPT-5 Thinking','Grok 4'],
+      'few-shot':['Claude Sonnet 3','Gemini 2.5 Pro'],
+      'react-tool':['Perplexity','Grok 4']
+    };
+
+    // ====== PATTERNS: Remove unwanted groups ======
+    const patternGroups = [
+      {
+        label: 'Bilingual',
+        items: [
+          {label:'Bilingual Vietnamese–English 🇻🇳🇬🇧',value:'Answer in both Vietnamese and English. Keep structure matched for each item.'},
+          {label:'Bilingual Vietnamese–Japanese 🇻🇳🇯🇵',value:'Answer in both Vietnamese and Japanese. Use polite style.'}
+        ]
+      },
+      {
+        label: 'Reporting & Presentation',
+        items: [
+          {label:'Markdown table 📊',value:'Return a Markdown table. No prose. Include header.'},
+          {label:'CSV for report 📑',value:'Return CSV UTF-8, comma, with header.'},
+          {label:'Chart spec 📈',value:'Suggest 1–2 charts. Axes, type, title, notes.'},
+          {label:'Mermaid diagram 🧩',value:'Return Mermaid code (flowchart/sequence/class), code only.'}
+        ]
+      },
+      {
+        label: 'Problem Analysis — Diagnosis',
+        items: [
+          {label:'5W1H 🧩',value:'What/Why/Where/When/Who/How for the problem. ≤7 bullets per item.'},
+          {label:'5 Whys ❓',value:'Find root cause using 5 Whys. Stop early if repeated.'}
+        ]
+      }
+    ];
+
+    // ================= Helpers =================
+    const STORE_MODE_KEY='pe_store_mode'; // 'session' | 'local'
+    function getStore(){ return (localStorage.getItem(STORE_MODE_KEY)||'session')==='local'? localStorage : sessionStorage; }
+    function setStoreMode(mode){ localStorage.setItem(STORE_MODE_KEY, mode); toast(mode==='local'? 'Đang lưu lâu (localStorage)':'Phiên riêng tư (sessionStorage)'); }
+
+    function toBadge(text){ return `<span class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-lg border border-slate-700 bg-slate-900/50 text-slate-200">${text}</span>` }
+
+    function saveState(){
+      const store=getStore();
+      const state={
+        tech: store.getItem('selected-tech')||'zero-shot',
+        fields: Array.from(document.querySelectorAll('[data-field]')).reduce((acc,el)=>{ acc[el.id]=(el.type==='checkbox'? el.checked: el.value); return acc; },{}),
+        output: $('output')? $('output').value : '',
+        dark: true // locked
+      };
+      store.setItem('pe_studio_state', JSON.stringify(state));
+    }
+
+    function loadState(){
+      const store=getStore(); const raw=store.getItem('pe_studio_state'); if(!raw) return;
+      try{ const s=JSON.parse(raw); if(s.tech) selectTechnique(s.tech);
+        setTimeout(()=>{
+          if(s.fields){ Object.entries(s.fields).forEach(([id,val])=>{ const el=$(id); if(el){ if(el.type==='checkbox'){ el.checked=!!val } else { el.value=val } } }); }
+          if(typeof s.output==='string' && $('output')){ $('output').value=s.output; updateStats(); }
+        },50);
+      }catch(e){}
+    }
+
+    function updateStats() {
+      const txt = $('output') ? ($('output').value || '') : '';
+      const chars = txt.replace(/\r?\n/g, '').length;
+      const words = (txt.match(/\b[\p{L}\p{N}’'-]+\b/gu) || []).length;
+      const tokens = Math.ceil(txt.length / 4);
+      if ($('stats')) $('stats').textContent = `${chars} characters • ${words} words • ~${tokens} tokens`;
+    }
+
+    // ================= Renderers =================
+    function renderSidebar(){ const nav=$('techNav'); nav.innerHTML=''; techniques.forEach(t=>{ const item=document.createElement('button'); item.type='button'; item.className='w-full text-left p-3 rounded-xl hover:bg-slate-900 flex items-start gap-3 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary-500'; item.innerHTML=`
+      <div class="h-9 w-9 rounded-lg bg-gradient-to-br from-primary-900/30 to-accent-900/30 flex items-center justify-center"><svg viewBox="0 0 24 24" class="h-4 w-4 text-slate-200" fill="none" stroke="currentColor" stroke-width="2">${t.icon}</svg></div>
+      <div class="flex-1 min-w-0"><div class="flex items-center justify-between"><span class="text-sm font-medium text-slate-100">${t.title}</span></div><p class="text-xs text-slate-400 mt-0.5">${t.desc}</p></div>`; item.addEventListener('click',()=> selectTechnique(t.key)); item.dataset.key=t.key; nav.appendChild(item); }); highlightSelected(getStore().getItem('selected-tech')||'zero-shot'); }
+
+    function highlightSelected(key){ document.querySelectorAll('#techNav button').forEach(b=>{ if(b.dataset.key===key){ b.classList.add('bg-primary-900/20','border','border-primary-800'); } else { b.classList.remove('bg-primary-900/20','border','border-primary-800'); } }); }
+
+    function renderInputs(tech){ const fields=techniqueInputs[tech]; const wrap=$('inputFields'); wrap.innerHTML=''; fields.forEach(f=>{ const id=f.id; const col=document.createElement('div'); col.className='space-y-2'; const label=document.createElement('label'); label.setAttribute('for',id); label.className='text-xs font-medium text-slate-300'; label.innerHTML=`${f.label}${f.required? ' <span class="text-rose-400">*</span>':''}`; let inputHTML=''; if(f.type==='textarea'){ inputHTML=`<textarea id="${id}" data-field rows="4" class="w-full rounded-xl border border-slate-800 bg-slate-900/60 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 text-slate-100" placeholder="${f.placeholder||''}"></textarea>`; } else if(f.type==='select'){ inputHTML=`<select id="${id}" data-field class="w-full rounded-xl border border-slate-800 bg-slate-900/60 p-2.5 text-sm text-slate-100">${(f.options||[]).map(o=>`<option value="${o}">${o}</option>`).join('')}</select>`; } else if(f.type==='checkbox'){ inputHTML=`<label class="inline-flex items-center gap-2"><input id="${id}" data-field type="checkbox" class="w-4 h-4 rounded border-slate-600 bg-slate-900 text-primary-500"><span class="text-sm text-slate-200">${f.label}</span></label>` } else { inputHTML=`<input id="${id}" data-field type="${f.type||'text'}" min="${f.min||''}" max="${f.max||''}" value="${f.value||''}" class="w-full rounded-xl border border-slate-800 bg-slate-900/60 p-2.5 text-sm text-slate-100" placeholder="${f.placeholder||''}" />` } col.appendChild(label); const holder=document.createElement('div'); holder.innerHTML=inputHTML; col.appendChild(holder.firstChild); wrap.appendChild(col); }); document.querySelectorAll('[data-field]').forEach(el=> el.addEventListener('input', saveState)); }
+
+    function renderExplanation(tech){ const exp=techniqueExplanations[tech]; $('expTitle').textContent=techniques.find(t=>t.key===tech)?.title||'Kỹ thuật'; $('expDesc').innerHTML=exp.description; $('expExample').innerHTML=exp.example; }
+
+    function renderPatterns(){ 
+      const box=$('patterns'); 
+      box.innerHTML=''; 
+      patternGroups.forEach(group=>{
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'mb-4 relative';
+        const groupLabel = document.createElement('h4');
+        groupLabel.className = 'text-xs font-semibold text-slate-300 uppercase mb-2';
+        groupLabel.textContent = group.label;
+        groupDiv.appendChild(groupLabel);
+
+        group.items.forEach(p=>{ 
+          const b=document.createElement('button'); 
+          b.type='button'; 
+          b.className='text-xs px-2 py-1 rounded-lg border border-slate-700 hover:bg-slate-900 text-slate-200 relative'; 
+          b.textContent=p.label;
+          b.title = p.value;
+          // Pattern tip popup
+          b.addEventListener('click', (e)=>{
+            const tgt=document.querySelector('#inputFields textarea, #inputFields input[type=text]'); 
+            if(tgt){ 
+              tgt.value=(tgt.value? tgt.value+'\n':'')+p.value; 
+              tgt.dispatchEvent(new Event('input')); 
+            } 
+            toast('Pattern inserted');
+            // Popup tip
+            let tip = b.querySelector('.pattern-tip-popup');
+            if (!tip) {
+              tip = document.createElement('div');
+              tip.className = 'pattern-tip-popup';
+              tip.textContent = p.value;
+              b.appendChild(tip);
+            }
+            tip.classList.add('active');
+            setTimeout(()=>{ tip.classList.remove('active'); }, 1600);
+          }); 
+          groupDiv.appendChild(b);
+        });
+
+        box.appendChild(groupDiv);
+      }); 
+    }
+
+    function selectTechnique(key){ const store=getStore(); store.setItem('selected-tech', key); highlightSelected(key); renderInputs(key); renderExplanation(key); saveState(); }
+
+    // ================= Actions =================
+    function generatePrompt(){
+  const store=getStore();
+  const technique=store.getItem('selected-tech')||'zero-shot';
+  const recs=(aiRecommendations[technique]||[]).join(', ');
+  let prompt='';
+  function v(id){ const el=$(id); return el? (el.type==='checkbox'? el.checked: el.value) : ''; }
+  switch(technique){
+    case 'zero-shot': prompt=`Task: ${v('task')}
+Context/Input: ${v('input')}
+Output Format: ${v('output-format')}
+
+Response:`; break;
+    case 'few-shot': prompt=`Task: ${v('task')}
+Examples:
+1. Input: ${v('example1-input')} → Output: ${v('example1-output')}
+2. Input: ${v('example2-input')} → Output: ${v('example2-output')}
+
+Now solve:
+Input: ${v('new-input')}
+Output:`; break;
+    case 'react-tool': prompt=`You have access to these tools: ${v('tools')}
+Task: ${v('task')}
+Input: ${v('input')}
+Use tools as needed and show your work.`; break;
+  }
+  if($('output')){
+    $('output').value = `${prompt}
+
+---
+Tư vấn AI nên dùng cho kỹ thuật này:
+${recs}`.trim();
+    updateStats(); saveState(); toast('Đã tạo prompt');
+    // Thêm focus và scroll vào output
+    $('output').focus();
+    $('output').scrollIntoView({block:"center", behavior:"smooth"});
+  }
+}
+
+    function validateRequired(){ const store=getStore(); const tech=store.getItem('selected-tech')||'zero-shot'; const fields=techniqueInputs[tech]; let missing=[]; fields.forEach(f=>{ if(f.required){ const el=$(f.id); const val=el?(el.type==='checkbox'? el.checked : (el.value||'').trim()):''; if(!val){ missing.push(f.label); if(el){ el.classList.add('ring','ring-rose-500'); setTimeout(()=> el.classList.remove('ring','ring-rose-500'),1200); } } } }); if(missing.length){ toast('Missing: '+missing.join(', ')); } else { toast('All required fields filled'); } }
+
+    function copyOutput(){ const txt=$('output')? $('output').value : ''; navigator.clipboard.writeText(txt).then(()=> toast('Copied')).catch(()=> toast('Copy failed')); }
+    function downloadOutput(){ const blob=new Blob([$('output')? $('output').value:'' ],{type:'text/plain'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='prompt.txt'; a.click(); URL.revokeObjectURL(url); }
+
+    function clearAll(){ const store=getStore(); store.removeItem('pe_studio_state'); document.querySelectorAll('[data-field]').forEach(el=>{ if(el.type==='checkbox') el.checked=false; else el.value='' }); if($('output')){ $('output').value=''; updateStats(); } toast('Reset'); saveState(); }
+
+    // Export / Import
+    function exportState(){ const store=getStore(); const raw=store.getItem('pe_studio_state')||'{}'; const blob=new Blob([raw],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='pe_studio_state.json'; a.click(); URL.revokeObjectURL(url); }
+    function importState(){ $('fileInput').click(); }
+    $('fileInput').addEventListener('change', async (e)=>{ const f=e.target.files?.[0]; if(!f) return; const txt=await f.text(); try{ const s=JSON.parse(txt); localStorage.setItem(STORE_MODE_KEY, localStorage.getItem(STORE_MODE_KEY)||'session'); const store=getStore(); store.setItem('pe_studio_state', JSON.stringify(s)); loadState(); toast('Imported'); }catch(err){ toast('Invalid file'); } e.target.value=''; });
+
+    // Cost calculator
+    function calcCost(){ const charsIn = Array.from(document.querySelectorAll('#inputFields textarea, #inputFields input[type=text]')).reduce((n,el)=> n + (el.value||'').length, 0); const inTok=Math.ceil(charsIn/4); const outTok= Number($('expOutTok').value)|| Math.ceil((($('output')? $('output').value : '').length)/4); const inRate=Number($('inRate').value)||0; const outRate=Number($('outRate').value)||0; const cost = (inTok/1000)*inRate + (outTok/1000)*outRate; $('costResult').textContent = `≈ ${inTok} in-tok, ${outTok} out-tok → ${cost.toFixed(4)}`; }
+
+    // Start
+    function startApp(){
+      renderSidebar(); renderPresets(); initPresetToggle(); renderPatterns(); selectTechnique(getStore().getItem('selected-tech')||'zero-shot'); loadState(); updateStats();
+      // actions
+      $('generateBtn').addEventListener('click', generatePrompt);
+      $('validateBtn').addEventListener('click', validateRequired);
+      $('copyBtn').addEventListener('click', copyOutput);
+      $('downloadBtn').addEventListener('click', downloadOutput);
+      $('clearOutput').addEventListener('click', ()=>{ if($('output')){ $('output').value=''; updateStats(); saveState(); }});
+      $('resetAll').addEventListener('click', clearAll);
+      $('clearInputs').addEventListener('click', ()=>{ document.querySelectorAll('[data-field]').forEach(el=>{ if(el.type==='checkbox'){ el.checked=false } else { el.value='' } }); saveState(); });
+      $('output').addEventListener('input', ()=>{ updateStats(); saveState(); });
+      document.addEventListener('keydown',(e)=>{ if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){ e.preventDefault(); generatePrompt(); } if((e.ctrlKey||e.metaKey)&&(e.key==='c'||e.key==='C')){ if(document.activeElement && document.activeElement.id==='output'){ e.preventDefault(); copyOutput(); } } });
+
+      $('stealthToggle').addEventListener('click', ()=>{ document.documentElement.classList.toggle('stealth-page'); });
+      $('panicBtn').addEventListener('click', ()=>{ $('app').classList.toggle('blurred'); });
+      $('exportBtn').addEventListener('click', exportState);
+      $('importBtn').addEventListener('click', importState);
+      $('presetStealth').addEventListener('click', ()=>{ $('presetsCard').classList.toggle('stealth-preset'); });
+      $('calcCost').addEventListener('click', calcCost);
+    }
+
+    let __started=false; function startAppOnce(){ if(__started) return; __started=true; startApp(); }
+
+    // Presets
+    const presets=[
+      { label:'Marketing & SEO Operations', emoji:'📈', color:'from-emerald-500 to-emerald-700', subtitle:'Lead gen, A/B test, ROI/CAC/LTV', techniques:['react-tool','critique-refine','zero-shot'] },
+      { label:'Coding & Technical Support', emoji:'💻', color:'from-blue-500 to-blue-700', subtitle:'Code, debug, docstring, review', techniques:['few-shot','critique-refine','react-tool'] },
+      { label:'Strategic & Political Decision Making', emoji:'♟️', color:'from-amber-500 to-orange-700', subtitle:'Option tree, risk, power map', techniques:['cot-hidden','self-consistency','react-tool'] },
+      { label:'Personal Assistant & Q&A', emoji:'🧭', color:'from-violet-500 to-fuchsia-700', subtitle:'Checklist, email, task organization', techniques:['zero-shot','critique-refine'] },
+      { label:'Competitive Analysis & Customer Insight', emoji:'🔍', color:'from-rose-500 to-red-700', subtitle:'Benchmark, JTBD, 5 Whys', techniques:['react-tool','cot-hidden','self-consistency'] }
+    ];
+
+    function toBadgeSimple(text){ return `<span class="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded border border-slate-700 bg-slate-900/60 text-slate-200">${text}</span>` }
+    function renderPresets(){ const list=$('presetList'); if(!list) return; list.innerHTML=''; presets.forEach(p=>{ const item=document.createElement('button'); item.type='button'; item.className='w-full text-left flex items-start gap-3 p-3 rounded-xl hover:bg-slate-900 border border-slate-800'; item.innerHTML=`<div class="h-9 w-9 rounded-lg bg-gradient-to-br ${p.color} text-white flex items-center justify-center text-base">${p.emoji}</div><div class="min-w-0"><div class="text-sm font-medium text-slate-100">${p.label}</div><p class="text-xs text-slate-400 mt-0.5">${p.subtitle}</p><div class="mt-1 flex flex-wrap gap-1">${(p.techniques||[]).map(t=> toBadgeSimple(t)).join('')}</div></div>`; item.addEventListener('click',()=>{ if(p.techniques && p.techniques.length){ const first=p.techniques[0]; const map={'zero-shot':'zero-shot','few-shot':'few-shot','cot-hidden':'cot-hidden','react-tool':'react-tool','self-consistency':'self-consistency','critique-refine':'critique-refine'}; if(map[first]) selectTechnique(map[first]); } toast('Đã chọn preset: '+p.label); }); list.appendChild(item); }); }
+
+    function initPresetToggle(){ const list=$('presetList'); const btn=$('presetToggle'); if(!list||!btn) return; const key='presetCollapsed'; let collapsed=localStorage.getItem(key)==='1'; if(collapsed) list.classList.add('hidden'); btn.textContent= collapsed? 'Mở rộng':'Thu nhỏ'; btn.addEventListener('click',()=>{ const isHidden=list.classList.toggle('hidden'); btn.textContent= isHidden? 'Mở rộng':'Thu nhỏ'; localStorage.setItem(key, isHidden? '1':'0'); }); }
+
+    // Bio show/hide
+    (function(){
+      const hideBtn = document.getElementById('hideBio');
+      const showBtn = document.getElementById('showBio');
+      const bio = document.getElementById('bioCard');
+      if(hideBtn && showBtn && bio){
+        hideBtn.addEventListener('click', ()=>{
+          bio.classList.add('hidden');
+          showBtn.classList.remove('hidden');
+          hideBtn.classList.add('hidden');
+        });
+        showBtn.addEventListener('click', ()=>{
+          bio.classList.remove('hidden');
+          showBtn.classList.add('hidden');
+          hideBtn.classList.remove('hidden');
+        });
+      }
+    })();
+
+    $('output').focus();
+    $('output').scrollIntoView({block:"center", behavior:"smooth"});
+
+    // ================= Particles background =================
+    (function(){
+  // Config
+  const PARTICLE_NUM = 70;
+  const PARTICLE_SIZE = 2.2;
+  const LINE_DIST = 110;
+  const SPEED = 0.5;
+
+  const canvas = document.getElementById('particles-bg');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w = window.innerWidth, h = window.innerHeight;
+  function resize() {
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width = w;
+    canvas.height = h;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Particle data
+  const particles = [];
+  for (let i = 0; i < PARTICLE_NUM; i++) {
+    particles.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * SPEED,
+      vy: (Math.random() - 0.5) * SPEED
+    });
+  }
+
+  // Mouse
+  const mouse = { x: w/2, y: h/2 };
+  window.addEventListener('mousemove', e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    // Draw particles
+    for (let i = 0; i < PARTICLE_NUM; i++) {
+      const p = particles[i];
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, PARTICLE_SIZE, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(80,200,255,0.8)';
+      ctx.shadowColor = '#3a8cff';
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+    // Draw lines
+    for (let i = 0; i < PARTICLE_NUM; i++) {
+      for (let j = i + 1; j < PARTICLE_NUM; j++) {
+        const p1 = particles[i], p2 = particles[j];
+        const dx = p1.x - p2.x, dy = p1.y - p2.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < LINE_DIST) {
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `rgba(80,200,255,${1 - dist / LINE_DIST})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+    // Draw lines to mouse
+    for (let i = 0; i < PARTICLE_NUM; i++) {
+      const p = particles[i];
+      const dx = p.x - mouse.x, dy = p.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < LINE_DIST) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(mouse.x, mouse.y);
+        ctx.strokeStyle = `rgba(255,255,255,${0.5 - dist / (2*LINE_DIST)})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+  }
+
+  function update() {
+    for (let i = 0; i < PARTICLE_NUM; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
+    }
+  }
+
+  function loop() {
+    update();
+    draw();
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+  </script>
+</body>
+</html>
