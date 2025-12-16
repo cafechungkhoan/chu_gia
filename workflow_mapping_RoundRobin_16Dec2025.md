@@ -2,7 +2,7 @@
 
 ## 📋 System Overview
 
-This script automatically distributes leads from Google Sheets and sends email notifications to Life Planners (LP) using a round-robin mechanism.
+This script automatically distributes leads from Google Sheets and sends email notifications to TCV.
 
 **Trigger mechanism**: Time-driven polling (every 1 minute)
 
@@ -671,4 +671,5 @@ enableScript();
 - ✅ Thread-safe with Lock
 - ✅ Manual testing functions
 - ✅ Flexible configuration
+
 
