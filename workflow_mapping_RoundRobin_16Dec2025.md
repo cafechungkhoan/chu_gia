@@ -244,7 +244,7 @@ flowchart LR
 - Test names: `nguyen van a`, `tran thi b`
 - Test phones: `0000000000`, `1111111111`
 - Bot: `bot`, `robot`, `automated`
-- Profanity: `đm`, `dm`, `cc`, `vl`, `fuck`
+- Profanity:_________________________________
 - Suspicious: `hack`, `virus`, `malware`
 
 **Check columns**: A, B, D, E, H  
@@ -671,5 +671,6 @@ enableScript();
 - ✅ Thread-safe with Lock
 - ✅ Manual testing functions
 - ✅ Flexible configuration
+
 
 
